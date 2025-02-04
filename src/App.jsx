@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Login from './component/Login'
+import LandingPage from './component/LandingPage'
 import Header from './component/Header'
 import './App.css'
 
@@ -11,7 +11,7 @@ function App() {
         <Router>
            <Header />
            <Routes>
-              <Route path="/" element={<Login />} />
+              <Route path="/" element={<LandingPage />} />
            </Routes>
         </Router>
     </div>

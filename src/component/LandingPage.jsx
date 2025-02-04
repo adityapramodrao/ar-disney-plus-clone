@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const Login = (props) => {
+export const LandingPage = (props) => {
     return (
         <Container>
             <Content>
@@ -105,6 +105,6 @@ const CTALogoTwo = styled.img`
 `;
 
 
-export default Login;
+export default LandingPage;
 
 
