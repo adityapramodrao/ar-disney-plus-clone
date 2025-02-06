@@ -1,19 +1,23 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
+// Load stored user and token from localStorage
+const storedUser = JSON.parse(localStorage.getItem('user')) || null;
+const storedToken = localStorage.getItem('token') || null;
+
 // Define the initial state
 const initialState = {
-  token: localStorage.getItem('token') || null,
-  user: null,
+  token: storedToken,
+  user: storedUser,
   status: 'idle',
   error: null,
 };
 
-// Async thunk for login using fetch
+// Async thunk for login
 export const loginUser = createAsyncThunk(
   'auth/loginUser',
   async (userCredentials, { rejectWithValue }) => {
     try {
-      const response = await fetch('https://dummyjson.com/user/login', {
+      const response = await fetch('https://dummyjson.com/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -21,7 +25,7 @@ export const loginUser = createAsyncThunk(
         body: JSON.stringify({
           username: userCredentials.username,
           password: userCredentials.password,
-          expiresInMins: 1, // optional
+          expiresInMins: 5, // Increase session time
         }),
       });
 
@@ -30,7 +34,33 @@ export const loginUser = createAsyncThunk(
       }
 
       const data = await response.json();
-      return data; // Assuming response contains token and user data
+      return data; // API returns { accessToken, refreshToken, user }
+    } catch (err) {
+      return rejectWithValue(err.message);
+    }
+  }
+);
+
+// Async thunk for refreshing token
+export const refreshToken = createAsyncThunk(
+  'auth/refreshToken',
+  async (_, { getState, rejectWithValue }) => {
+    try {
+      const refreshToken = getState().auth.user?.refreshToken;
+      if (!refreshToken) throw new Error('No refresh token available');
+
+      const response = await fetch('https://dummyjson.com/auth/refresh', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ refreshToken }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Token refresh failed');
+      }
+
+      const data = await response.json();
+      return data; // API returns new accessToken
     } catch (err) {
       return rejectWithValue(err.message);
     }
@@ -45,6 +75,7 @@ const authSlice = createSlice({
       state.token = null;
       state.user = null;
       localStorage.removeItem('token');
+      localStorage.removeItem('user');
     },
   },
   extraReducers: (builder) => {
@@ -54,20 +85,26 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.token = action.payload.token; // Assuming the response has 'token'
-        state.user = action.payload.user;   // Assuming the response has 'user'
-        localStorage.setItem('token', action.payload.token); // Persist token
+        state.token = action.payload.accessToken;
+        state.user = action.payload; // Save full user data
+        localStorage.setItem('token', action.payload.accessToken);
+        localStorage.setItem('user', JSON.stringify(action.payload));
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload;
+      })
+      .addCase(refreshToken.fulfilled, (state, action) => {
+        state.token = action.payload.accessToken;
+        localStorage.setItem('token', action.payload.accessToken);
+      })
+      .addCase(refreshToken.rejected, (state) => {
+        state.token = null;
+        state.user = null;
+        localStorage.clear();
       });
   },
 });
 
 export const { logout } = authSlice.actions;
-
-export const selectUserName  = (state) => state.user.firstName;
-export const selectUserEmail  = (state) => state.user.lastName;
-export const selectUserImage  = (state) => state.user.image;
-export default authSlice;
+export default authSlice.reducer;

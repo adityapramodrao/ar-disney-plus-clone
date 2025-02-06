@@ -1,20 +1,29 @@
 import React from "react";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
-import { selectUserName, selectUserImage } from "../slices/authSlice";
+import { useNavigate } from "react-router-dom";
+import {logout}  from '../slices/authSlice';
+import { useSelector, useDispatch } from "react-redux";
 
 
 
 export const Header = () =>{
-  const token = useSelector((state) => state);
-  console.log(token)
+  const dispatch = useDispatch()
+  const navigation = useNavigate()
+  const data  = useSelector((state) => state.auth);
+
+  const handleLogout = () => {
+    dispatch(logout());  // Ensure logout is dispatched
+    localStorage.removeItem("token"); // Remove token from storage
+    navigation("/signin");  // Redirect user to sign-in page
+  };
   
+
     return (
         <Nav>
             <Logo>
                <img src="/images/logo.svg" alt="logo"/>
             </Logo>
-            {token ? (<LoginBtn href='/signin'>Sign in</LoginBtn>) : (
+            {!data?.token ? (<LoginBtn href='/signin'>Sign in</LoginBtn>) : (
             <>
             <NavMenu>
                 <a href="/home">
@@ -43,9 +52,9 @@ export const Header = () =>{
             </a>
             </NavMenu>
             <SignOut>
-                <UserImg src={selectUserImage} alt={selectUserName} />
+                <UserImg src={data.user.image} alt={data.user.firstName} />
                 <DropDown>
-                  <span>Sign out</span>
+                  <span onClick={handleLogout}>Sign out</span>
                 </DropDown>
             </SignOut>
             </>
