@@ -1,12 +1,21 @@
 import React from "react";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
+import { selectUserName, selectUserImage } from "../slices/authSlice";
+
+
 
 export const Header = () =>{
+  const token = useSelector((state) => state);
+  console.log(token)
+  
     return (
         <Nav>
             <Logo>
                <img src="/images/logo.svg" alt="logo"/>
             </Logo>
+            {token ? (<LoginBtn href='/signin'>Sign in</LoginBtn>) : (
+            <>
             <NavMenu>
                 <a href="/home">
                     <img src="/images/home-icon.svg" alt="HOME" />
@@ -33,6 +42,15 @@ export const Header = () =>{
               <span>SERIES</span>
             </a>
             </NavMenu>
+            <SignOut>
+                <UserImg src={selectUserImage} alt={selectUserName} />
+                <DropDown>
+                  <span>Sign out</span>
+                </DropDown>
+            </SignOut>
+            </>
+            )}
+            
         </Nav>
     )
 }
@@ -133,6 +151,7 @@ const NavMenu = styled.div`
 
 
 const Login = styled.a`
+  
   background-color: rgba(0, 0, 0, 0.6);
   padding: 8px 16px;
   text-transform: uppercase;
@@ -167,4 +186,43 @@ const DropDown = styled.div`
   opacity: 0;
 `;
 
+const LoginBtn = styled.a`
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 8px 16px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  border: 1px solid #f9f9f9;
+  border-radius: 4px;
+  transition: all 0.2s ease 0s;
+
+  &:hover {
+    background-color: #f9f9f9;
+    color: #000000;
+    border-color: transparent;
+  }
+`;
+
+const SignOut = styled.div`
+  position: relative;
+  height: 48px;
+  width: 48px;
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+
+  ${UserImg} {
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+  }
+
+  &:hover {
+    ${DropDown} {
+      opacity: 1;
+      transition-duration: 1s;
+    }
+  }
+`;
+ 
 export default Header;
