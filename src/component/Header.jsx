@@ -3,9 +3,6 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import {logout}  from '../slices/authSlice';
 import { useSelector, useDispatch } from "react-redux";
-
-
-
 export const Header = () =>{
   const dispatch = useDispatch()
   const navigation = useNavigate()
@@ -57,6 +54,8 @@ export const Header = () =>{
                   <span onClick={handleLogout}>Sign out</span>
                 </DropDown>
             </SignOut>
+
+            
             </>
             )}
             
@@ -233,5 +232,9 @@ const SignOut = styled.div`
     }
   }
 `;
+
+
+
+
  
 export default Header;
