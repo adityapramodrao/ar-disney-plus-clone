@@ -5,6 +5,7 @@ import Signin from './component/Signin'
 import Home from './Pages/Home'
 import './App.css'
 import MovieDetails from './Pages/MovieDetails'
+import NoPageFound from './Pages/utils/NoPageFound'
 
 function App() {
 
@@ -18,7 +19,7 @@ function App() {
               <Route path="signin" element={<Signin />} />
               <Route path="home" element={<Home />} />
               <Route path="/detail/:id" element={<MovieDetails />} />
-
+              <Route path="*" element={<NoPageFound />} />
            </Routes>
         </Router>
     </div>

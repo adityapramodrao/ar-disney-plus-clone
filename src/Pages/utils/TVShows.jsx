@@ -3,18 +3,17 @@ import styled from "styled-components";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUpcomingMovies } from "../../slices/upcomingMoviesSlice";
+import { fetchTvShows } from "../../slices/TVShowsSlice";
 
-const Image_address = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgUa2nUkJwrmxiAYBommnZ3eCHYKZEXKO23g&s";
 
-const Recommends = () => {
+const TVShows = () => {
   const carouselRef = useRef(null);
   const dispatch = useDispatch();
-  const { movies, status } = useSelector((state) => state.upcomingMovies);
+  const { Shows, status } = useSelector((state) => state.TvShows);
 
   useEffect(() => {
     if (status === "idle") {
-      dispatch(fetchUpcomingMovies());
+      dispatch(fetchTvShows());
     }
   }, [dispatch, status]);
 
@@ -32,16 +31,16 @@ const Recommends = () => {
 
   return (
     <Container>
-      <h4>Up-Coming Movies</h4>
+      <h4>Most Popular TV Shows</h4>
       <CarouselWrapper>
         <NavButton onClick={scrollLeft}>
           <FaChevronLeft />
         </NavButton>
         <Carousel ref={carouselRef}>
-          {movies.map((items) => (
+          {Shows.slice(0, 12).map((items) => (
             <MovieCard key={items.id}>
               <Link to={`/detail/${items.id}`}>
-                <MovieImage src={items.primaryImage ? items.primaryImage : Image_address} alt={items.primaryTitle} />
+                <MovieImage src={items.primaryImage} alt={items.primaryTitle} />
                 <MovieOverlay>
                   <MovieTitle>{items.primaryTitle}</MovieTitle>
                   <MovieGenres>{items.genres?.join(", ")}</MovieGenres>
@@ -60,7 +59,7 @@ const Recommends = () => {
   );
 };
 
-export default Recommends;
+export default TVShows;
 
 // Styled Components
 const Container = styled.div`
@@ -173,6 +172,7 @@ const MovieDescription = styled.div`
   -webkit-box-orient: vertical;
   white-space: normal;
 `;
+
 
 const NavButton = styled.button`
   background-color: rgba(0, 0, 0, 0.6);

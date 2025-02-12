@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { loginUser, logout, refreshToken } from "../slices/authSlice";
 import Signin from "../component/Signin"
 import styled from "styled-components";
-import { ImgSlider, Viewers, Recommends, Originals, Trending, NewDisney } from "./config";
+import { ImgSlider, Viewers, Recommends, TVShows, Trending, MostPopular } from "./config";
 
 export const Home = () => {
      const dispatch = useDispatch();
@@ -26,9 +26,8 @@ export const Home = () => {
                <ImgSlider />
                <Viewers />
                <Recommends />
-               <NewDisney />
-               <Originals />
-               <Trending />
+               <MostPopular />
+               <TVShows />
            </Container>
          
            

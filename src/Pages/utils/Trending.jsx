@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,28 +6,28 @@ import { fetchMovies } from "../../slices/movieSlice";
 
 
 const Trending = (props) => {
-    const dispatch = useDispatch();
-    const { movies, status, error } = useSelector((state) => state.movies);
+  const dispatch = useDispatch();
+  const { movies, status, error } = useSelector((state) => state.movies);
 
-    useEffect(() => {
-        if (status === "idle") {
-          dispatch(fetchMovies());
-        }
-      }, [dispatch, status]);
+  useEffect(() => {
+    if (status === "idle") {
+      dispatch(fetchMovies());
+    }
+  }, [dispatch, status]);
 
   return (
     <Container>
       <h4>Trending</h4>
       <Content>
-        
+
           {movies &&
             movies.slice(8, 12).map((movie, key) => (
-              <Wrap key={key}>
-                <Link to={`/detail/` + movie.id}>
-                  <img src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`} alt={movie.title} />
-                  <Title className="movie-title">{movie.title}</Title> {/* Movie title div */}
-                </Link>
-              </Wrap>
+            <Wrap key={key}>
+              <Link to={`/detail/` + movie.id}>
+                <img src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`} alt={movie.title} />
+                <Title className="movie-title">{movie.title}</Title> {/* Movie title div */}
+              </Link>
+            </Wrap>
             ))}
 
       </Content>

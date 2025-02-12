@@ -3,18 +3,18 @@ import styled from "styled-components";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUpcomingMovies } from "../../slices/upcomingMoviesSlice";
+import { fetchmostPopularUs } from "../../slices/mostPopularUs";
 
 const Image_address = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgUa2nUkJwrmxiAYBommnZ3eCHYKZEXKO23g&s";
 
-const Recommends = () => {
+const MostPopular = () => {
   const carouselRef = useRef(null);
   const dispatch = useDispatch();
-  const { movies, status } = useSelector((state) => state.upcomingMovies);
+  const { movies, status } = useSelector((state) => state.mostPopularUs);
 
   useEffect(() => {
     if (status === "idle") {
-      dispatch(fetchUpcomingMovies());
+      dispatch(fetchmostPopularUs());
     }
   }, [dispatch, status]);
 
@@ -32,7 +32,7 @@ const Recommends = () => {
 
   return (
     <Container>
-      <h4>Up-Coming Movies</h4>
+      <h4>Hollywood Most Popular Movies</h4>
       <CarouselWrapper>
         <NavButton onClick={scrollLeft}>
           <FaChevronLeft />
@@ -60,7 +60,7 @@ const Recommends = () => {
   );
 };
 
-export default Recommends;
+export default MostPopular;
 
 // Styled Components
 const Container = styled.div`
@@ -173,6 +173,7 @@ const MovieDescription = styled.div`
   -webkit-box-orient: vertical;
   white-space: normal;
 `;
+
 
 const NavButton = styled.button`
   background-color: rgba(0, 0, 0, 0.6);

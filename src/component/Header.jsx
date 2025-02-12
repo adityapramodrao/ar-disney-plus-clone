@@ -11,6 +11,7 @@ export const Header = () =>{
   const handleLogout = () => {
     dispatch(logout());  // Ensure logout is dispatched
     localStorage.removeItem("token"); // Remove token from storage
+    localStorage.removeItem("user"); // Remove token from storage
     navigation("/signin");  // Redirect user to sign-in page
   };
   
@@ -49,7 +50,7 @@ export const Header = () =>{
             </a>
             </NavMenu>
             <SignOut>
-                <UserImg src={data.user.image} alt={data.user.firstName} />
+                <UserImg src={data?.user?.image} alt={data?.user?.firstName} />
                 <DropDown>
                   <span onClick={handleLogout}>Sign out</span>
                 </DropDown>
