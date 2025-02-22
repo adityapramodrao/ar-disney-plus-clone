@@ -4,7 +4,7 @@ const API_URL = 'https://imdb236.p.rapidapi.com/imdb/most-popular-tv';
 const API_OPTIONS = {
   method: 'GET',
 	headers: {
-		'x-rapidapi-key': 'c5473e93c1mshe56ac2d8cb1a5fcp17b25cjsn74df0c5f6994',
+		'x-rapidapi-key': 'd4208338admshf8417d0181a9cc7p1ca70djsn993d1b6e26b9',
 		'x-rapidapi-host': 'imdb236.p.rapidapi.com'
 	}
 };

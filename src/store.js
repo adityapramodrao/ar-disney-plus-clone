@@ -4,6 +4,7 @@ import movieReducer from './slices/movieSlice';
 import upcomingMoviesSlice from './slices/upcomingMoviesSlice'
 import mostPopularUsSlice from './slices/mostPopularUs'
 import TvShowsSlice from './slices/TVShowsSlice'
+import DetailsPageSlice from './slices/DetailsPageSlice';
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
     movies: movieReducer,
     upcomingMovies: upcomingMoviesSlice,
     mostPopularUs : mostPopularUsSlice,
-    TvShows: TvShowsSlice
+    TvShows: TvShowsSlice,
+    ShowDetails : DetailsPageSlice
   },
 });
